@@ -4,20 +4,25 @@
     <div class="dash-header">
       <div>
         <p class="dash-greeting">{{ greeting }}, Admin</p>
-        <h1 class="dash-title">Dashboard</h1>
+        <h1 class="dash-title">Visão Geral</h1>
       </div>
-      <NuxtLink to="/admin/cursos/novo" class="btn-fsa-primary">
-        <i class="bi bi-plus-lg me-2"></i>Novo Curso
-      </NuxtLink>
+      <div class="d-flex gap-2">
+        <NuxtLink to="/admin/configuracoes" class="admin-btn-outline-modern">
+          <i class="bi bi-gear"></i> Configurações
+        </NuxtLink>
+        <NuxtLink to="/admin/cursos/novo" class="admin-btn-modern">
+          <i class="bi bi-plus-lg"></i> Novo Curso
+        </NuxtLink>
+      </div>
     </div>
 
     <!-- Bento Grid -->
     <div class="bento-grid">
 
       <!-- ── Courses (big left cell) ── -->
-      <div class="bento-card bento-courses">
+      <div class="admin-card-base bento-courses">
         <div class="bc-head">
-          <span class="bc-title"><i class="bi bi-collection me-2"></i>Cursos cadastrados</span>
+          <span class="bc-title"><i class="bi bi-collection me-2 text-cyan"></i>Cursos Recentes</span>
           <NuxtLink to="/admin/cursos" class="bc-link">
             Ver todos <i class="bi bi-arrow-right ms-1"></i>
           </NuxtLink>
@@ -35,23 +40,26 @@
             <div class="cl-info">
               <div class="cl-name">{{ course.name }}</div>
               <div class="cl-meta">
-                <span class="tag-area" style="font-size:0.65rem">{{ course.area }}</span>
-                <span style="opacity:0.4">·</span>
+                <span class="tag-area-neo">{{ course.area }}</span>
+                <span class="meta-dot">·</span>
                 <span>{{ course.duration }}m</span>
-                <span style="opacity:0.4">·</span>
+                <span class="meta-dot">·</span>
                 <span>{{ course.modalities[0] }}</span>
               </div>
             </div>
             <div class="cl-side">
-              <span class="cl-status" :class="course.status">{{ statusShort(course.status) }}</span>
-              <NuxtLink :to="`/admin/cursos/${course.id}/editar`" class="cl-edit">
-                <i class="bi bi-pencil-fill"></i>
+              <span class="status-pill-neo" :class="course.status">
+                <span class="status-dot"></span>
+                {{ statusShort(course.status) }}
+              </span>
+              <NuxtLink :to="`/admin/cursos/${course.id}/editar`" class="cl-edit-neo">
+                <i class="bi bi-pencil"></i>
               </NuxtLink>
             </div>
           </div>
           <div v-if="store.courses.length === 0" class="cl-empty">
-            <i class="bi bi-inbox" style="font-size:2rem;color:var(--fsa-text-muted)"></i>
-            <p style="color:var(--fsa-text-muted);margin:0.5rem 0 0;font-size:0.875rem">Nenhum curso cadastrado ainda.</p>
+            <div class="empty-icon-box"><i class="bi bi-inbox"></i></div>
+            <p>Nenhum curso cadastrado ainda.</p>
           </div>
         </div>
       </div>
@@ -59,77 +67,89 @@
       <!-- ── Right column ── -->
       <div class="bento-right">
 
-        <!-- Metrics 2x2 -->
+        <!-- Metrics 2x2 Neo -->
         <div class="metrics-grid">
-          <div class="m-cell m-cyan">
-            <div class="m-icon"><i class="bi bi-collection-fill"></i></div>
-            <div class="m-val">{{ store.courses.length }}</div>
-            <div class="m-lbl">Total</div>
+          <div class="m-cell-neo">
+            <div class="m-icon-box m-cyan"><i class="bi bi-journal-bookmark"></i></div>
+            <div class="m-content">
+              <div class="m-lbl">Total de Cursos</div>
+              <div class="m-val">{{ store.courses.length }}</div>
+            </div>
           </div>
-          <div class="m-cell m-green">
-            <div class="m-icon"><i class="bi bi-check-circle-fill"></i></div>
-            <div class="m-val">{{ activeCount }}</div>
-            <div class="m-lbl">Ativos</div>
+          <div class="m-cell-neo">
+            <div class="m-icon-box m-green"><i class="bi bi-check2-circle"></i></div>
+            <div class="m-content">
+              <div class="m-lbl">Cursos Ativos</div>
+              <div class="m-val">{{ activeCount }}</div>
+            </div>
           </div>
-          <div class="m-cell m-amber">
-            <div class="m-icon"><i class="bi bi-hourglass-split"></i></div>
-            <div class="m-val">{{ planningCount }}</div>
-            <div class="m-lbl">Planejamento</div>
+          <div class="m-cell-neo">
+            <div class="m-icon-box m-amber"><i class="bi bi-clock-history"></i></div>
+            <div class="m-content">
+              <div class="m-lbl">Em Planejamento</div>
+              <div class="m-val">{{ planningCount }}</div>
+            </div>
           </div>
-          <div class="m-cell m-purple">
-            <div class="m-icon"><i class="bi bi-diagram-3-fill"></i></div>
-            <div class="m-val">{{ areaCount }}</div>
-            <div class="m-lbl">Áreas</div>
+          <div class="m-cell-neo">
+            <div class="m-icon-box m-purple"><i class="bi bi-diagram-3"></i></div>
+            <div class="m-content">
+              <div class="m-lbl">Áreas de Estudo</div>
+              <div class="m-val">{{ areaCount }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick actions Neo -->
+        <div class="admin-card-base">
+          <div class="bc-head">
+            <span class="bc-title"><i class="bi bi-lightning-charge me-2 text-cyan"></i>Ações Rápidas</span>
+          </div>
+          <div class="qa-list">
+            <NuxtLink to="/admin/cursos/novo" class="qa-item-neo">
+              <div class="qa-icon-wrap bg-cyan-subtle"><i class="bi bi-magic text-cyan"></i></div>
+              <div class="qa-info">
+                <span class="qa-label">Novo Curso via IA</span>
+                <span class="qa-sub">Crie com upload do arquivo PPC</span>
+              </div>
+              <i class="bi bi-chevron-right qa-arr"></i>
+            </NuxtLink>
+            <NuxtLink to="/admin/configuracoes" class="qa-item-neo">
+              <div class="qa-icon-wrap bg-purple-subtle"><i class="bi bi-brush" style="color:#a78bfa"></i></div>
+              <div class="qa-info">
+                <span class="qa-label">Personalizar Tema</span>
+                <span class="qa-sub">Troque as imagens e textos do Hero</span>
+              </div>
+              <i class="bi bi-chevron-right qa-arr"></i>
+            </NuxtLink>
+            <NuxtLink to="/admin/configuracoes?tab=pagamentos" class="qa-item-neo">
+              <div class="qa-icon-wrap bg-green-subtle"><i class="bi bi-cash-stack" style="color:#34d399"></i></div>
+              <div class="qa-info">
+                <span class="qa-label">Ajustar Financeiro</span>
+                <span class="qa-sub">Descontos PIX e Integrações (Stripe)</span>
+              </div>
+              <i class="bi bi-chevron-right qa-arr"></i>
+            </NuxtLink>
           </div>
         </div>
 
         <!-- Area breakdown -->
-        <div class="bento-card">
+        <div class="admin-card-base">
           <div class="bc-head">
-            <span class="bc-title"><i class="bi bi-bar-chart me-2"></i>Por área</span>
+            <span class="bc-title"><i class="bi bi-bar-chart me-2 text-primary"></i>Distribuição de Áreas</span>
           </div>
           <div class="area-list">
             <div v-for="a in areaBreakdown" :key="a.area" class="al-row">
               <div class="al-top">
                 <span class="al-name">{{ a.area }}</span>
-                <span class="al-count">{{ a.count }}</span>
+                <span class="al-count">{{ a.count }} curso(s)</span>
               </div>
               <div class="al-track">
                 <div class="al-fill" :style="`width:${a.pct}%`"></div>
               </div>
             </div>
-            <div v-if="areaBreakdown.length === 0" style="color:var(--fsa-text-muted);font-size:0.8rem;text-align:center;padding:0.75rem 0">
-              Sem dados
+            <div v-if="areaBreakdown.length === 0" class="empty-data-neo">
+              Sem dados suficientes
             </div>
-          </div>
-        </div>
-
-        <!-- Quick actions -->
-        <div class="bento-card">
-          <div class="bc-head">
-            <span class="bc-title"><i class="bi bi-lightning-fill me-2"></i>Ações rápidas</span>
-          </div>
-          <div class="qa-list">
-            <NuxtLink to="/admin/cursos/novo" class="qa-item">
-              <div class="qa-dot" style="background:rgba(56,182,255,0.15)"><i class="bi bi-plus-lg" style="color:var(--fsa-cyan)"></i></div>
-              <div><div class="qa-label">Cadastrar curso</div><div class="qa-sub">Manualmente ou via IA</div></div>
-              <i class="bi bi-chevron-right qa-arr"></i>
-            </NuxtLink>
-            <NuxtLink to="/admin/configuracoes" class="qa-item">
-              <div class="qa-dot" style="background:rgba(139,92,246,0.15)"><i class="bi bi-image" style="color:#8b5cf6"></i></div>
-              <div><div class="qa-label">Banners e site</div><div class="qa-sub">Hero, anúncio, contato</div></div>
-              <i class="bi bi-chevron-right qa-arr"></i>
-            </NuxtLink>
-            <NuxtLink to="/admin/cursos" class="qa-item">
-              <div class="qa-dot" style="background:rgba(34,197,94,0.15)"><i class="bi bi-pencil-square" style="color:#22c55e"></i></div>
-              <div><div class="qa-label">Gerenciar cursos</div><div class="qa-sub">Editar, excluir, publicar</div></div>
-              <i class="bi bi-chevron-right qa-arr"></i>
-            </NuxtLink>
-            <a href="/" target="_blank" class="qa-item">
-              <div class="qa-dot" style="background:rgba(251,191,36,0.15)"><i class="bi bi-box-arrow-up-right" style="color:#fbbf24"></i></div>
-              <div><div class="qa-label">Ver site público</div><div class="qa-sub">Abrir em nova aba</div></div>
-              <i class="bi bi-chevron-right qa-arr"></i>
-            </a>
           </div>
         </div>
 
@@ -177,150 +197,168 @@ const icons: Record<string, string> = {
 const areaGrad = (a: string) => grads[a] ?? 'linear-gradient(135deg,#0a1f3a,#0d2f5a)'
 const areaIcon = (a: string) => icons[a] ?? 'bi bi-book'
 const statusShort = (s: string) =>
-  s === 'ativa' ? 'Ativa' : s === 'em_planejamento' ? 'Planejamento' : 'Inativa'
+  s === 'ativa' ? 'Ativo' : s === 'em_planejamento' ? 'Planejamento' : 'Inativo'
 </script>
 
 <style scoped>
-.dash { }
-
 .dash-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  margin-bottom: 1.75rem;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 2rem;
 }
 .dash-greeting {
-  font-size: 0.72rem; color: var(--fsa-text-muted); margin: 0 0 0.1rem;
-  text-transform: uppercase; letter-spacing: 0.1em;
+  font-size: 0.75rem; color: var(--fsa-cyan); margin: 0 0 0.25rem;
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
 }
-.dash-title { font-size: 1.75rem; font-weight: 800; margin: 0; }
+.dash-title { font-size: 2rem; font-weight: 800; margin: 0; line-height: 1; text-shadow: 0 0 30px rgba(255,255,255,0.1); }
 
-/* Bento layout */
+/* Neo Bento Grid */
 .bento-grid {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1rem;
+  grid-template-columns: 1fr 340px;
+  gap: 1.5rem;
   align-items: start;
 }
-.bento-right { display: flex; flex-direction: column; gap: 1rem; }
-.bento-card {
-  background: var(--fsa-bg-card);
-  border: 1px solid var(--fsa-border);
-  border-radius: var(--fsa-radius);
-  overflow: hidden;
-}
+.bento-right { display: flex; flex-direction: column; gap: 1.5rem; }
 
-/* Card header */
+/* Headers Cards Neo */
 .bc-head {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0.875rem 1.25rem;
-  border-bottom: 1px solid var(--fsa-border);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--fsa-border-glass);
+  background: rgba(0,0,0,0.15);
 }
-.bc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fsa-text-secondary); }
-.bc-link  { font-size: 0.75rem; color: var(--fsa-cyan); text-decoration: none; display: flex; align-items: center; transition: color 0.2s; }
-.bc-link:hover { color: var(--fsa-cyan-hover); }
+.bc-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fsa-text); }
+.bc-link  { font-size: 0.8rem; color: var(--fsa-text-secondary); text-decoration: none; display: flex; align-items: center; transition: color 0.2s; }
+.bc-link:hover { color: var(--fsa-cyan); }
 
-/* Course list */
+/* Course List Neo */
 .cl-item {
-  display: flex; align-items: center; gap: 0.875rem;
-  padding: 0.7rem 1.25rem; transition: background 0.2s; cursor: default;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.5rem; transition: background 0.2s;
+  border-bottom: 1px solid var(--fsa-border-glass);
 }
-.cl-item:hover { background: rgba(56,182,255,0.03); }
-.cl-item + .cl-item { border-top: 1px solid rgba(30,58,95,0.5); }
+.cl-item:last-child { border-bottom: none; }
+.cl-item:hover { background: rgba(255,255,255,0.02); }
 
 .cl-thumb {
-  width: 42px; height: 42px; border-radius: 8px; flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
 }
-.cl-thumb-icon { font-size: 1rem; color: rgba(255,255,255,0.35); }
+.cl-thumb-icon { font-size: 1.2rem; color: rgba(255,255,255,0.6); }
 
-.cl-info { flex: 1; min-width: 0; }
+.cl-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.35rem; }
 .cl-name {
-  font-size: 0.875rem; font-weight: 600;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.2rem;
+  font-size: 0.95rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;
 }
-.cl-meta { display: flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; color: var(--fsa-text-muted); }
-
-.cl-side { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-.cl-status {
-  font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem;
-  border-radius: 20px; white-space: nowrap;
+.cl-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--fsa-text-muted); }
+.meta-dot { opacity: 0.5; font-size: 0.5rem; }
+.tag-area-neo {
+  background: rgba(255,255,255,0.05); padding: 0.15rem 0.6rem;
+  border-radius: 20px; color: var(--fsa-text-secondary); font-size: 0.7rem; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.05);
 }
-.cl-status.ativa           { background: rgba(34,197,94,0.12);  color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
-.cl-status.em_planejamento { background: rgba(249,115,22,0.12); color: #f97316; border: 1px solid rgba(249,115,22,0.25); }
-.cl-status.inativa         { background: rgba(100,116,139,0.1); color: #64748b; border: 1px solid rgba(100,116,139,0.2); }
 
-.cl-edit {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: var(--fsa-bg-secondary); border: 1px solid var(--fsa-border);
-  color: var(--fsa-text-muted); font-size: 0.68rem;
+.cl-side { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+
+.status-pill-neo {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.75rem;
+  border-radius: 20px; white-space: nowrap; border: 1px solid transparent;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+.status-pill-neo.ativa           { background: rgba(52, 211, 153, 0.1); color: #34d399; border-color: rgba(52, 211, 153, 0.2); }
+.status-pill-neo.ativa .status-dot { background: #34d399; box-shadow: 0 0 8px #34d399; }
+.status-pill-neo.em_planejamento { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border-color: rgba(251, 191, 36, 0.2); }
+.status-pill-neo.em_planejamento .status-dot { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+.status-pill-neo.inativa         { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border-color: rgba(148, 163, 184, 0.2); }
+.status-pill-neo.inativa .status-dot { background: #94a3b8; }
+
+.cl-edit-neo {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--fsa-border-glass);
+  color: var(--fsa-text-secondary); font-size: 0.85rem;
   display: flex; align-items: center; justify-content: center;
-  text-decoration: none; transition: all 0.2s;
+  transition: all 0.2s;
 }
-.cl-edit:hover { border-color: var(--fsa-cyan); color: var(--fsa-cyan); background: rgba(56,182,255,0.08); }
-.cl-empty { padding: 2.5rem; text-align: center; }
+.cl-edit-neo:hover {
+  background: var(--fsa-cyan); color: #000; border-color: var(--fsa-cyan);
+  box-shadow: 0 4px 12px rgba(56, 182, 255, 0.2);
+}
 
-/* Metrics 2x2 */
-.metrics-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+.cl-empty { padding: 4rem 2rem; text-align: center; }
+.empty-icon-box {
+  width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 1rem;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--fsa-border-glass);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: var(--fsa-text-muted);
 }
-.m-cell {
-  background: var(--fsa-bg-card); border: 1px solid var(--fsa-border);
-  border-radius: var(--fsa-radius); padding: 1rem 1rem 0.875rem;
-  position: relative; overflow: hidden;
-}
-.m-cell::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-}
-.m-cyan::after   { background: var(--fsa-cyan); }
-.m-green::after  { background: #22c55e; }
-.m-amber::after  { background: #f59e0b; }
-.m-purple::after { background: #8b5cf6; }
 
-.m-icon { font-size: 0.85rem; margin-bottom: 0.5rem; }
-.m-cyan   .m-icon { color: var(--fsa-cyan); }
-.m-green  .m-icon { color: #22c55e; }
-.m-amber  .m-icon { color: #f59e0b; }
-.m-purple .m-icon { color: #8b5cf6; }
-
-.m-val { font-size: 1.9rem; font-weight: 800; line-height: 1; margin-bottom: 0.2rem; }
-.m-lbl { font-size: 0.65rem; color: var(--fsa-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-/* Area breakdown */
-.area-list { padding: 0.875rem 1.25rem 1rem; }
-.al-row { margin-bottom: 0.75rem; }
-.al-row:last-child { margin-bottom: 0; }
-.al-top { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
-.al-name  { font-size: 0.78rem; font-weight: 600; color: var(--fsa-text-secondary); }
-.al-count { font-size: 0.72rem; color: var(--fsa-text-muted); font-weight: 700; }
-.al-track { height: 3px; background: var(--fsa-bg-secondary); border-radius: 99px; overflow: hidden; }
-.al-fill  { height: 100%; background: linear-gradient(90deg, var(--fsa-cyan), #1E9FE8); border-radius: 99px; transition: width 0.6s ease; }
-
-/* Quick actions */
-.qa-item {
-  display: flex; align-items: center; gap: 0.75rem;
-  padding: 0.75rem 1.25rem; text-decoration: none;
-  color: var(--fsa-text); transition: background 0.2s;
+/* Metrics Neo List */
+.metrics-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.m-cell-neo {
+  background: var(--fsa-bg-card); border: 1px solid var(--fsa-border-glass);
+  border-radius: var(--fsa-radius-sm); padding: 1rem 1.25rem;
+  display: flex; align-items: center; gap: 1.25rem; transition: var(--transition);
 }
-.qa-item:hover { background: rgba(56,182,255,0.04); color: var(--fsa-text); }
-.qa-item + .qa-item { border-top: 1px solid rgba(30,58,95,0.5); }
-.qa-dot {
-  width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+.m-cell-neo:hover { border-color: rgba(255,255,255,0.15); transform: translateX(4px); }
+.m-icon-box {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
 }
-.qa-label { font-size: 0.8rem; font-weight: 600; }
-.qa-sub   { font-size: 0.68rem; color: var(--fsa-text-muted); }
-.qa-arr   { font-size: 0.65rem; color: var(--fsa-text-muted); margin-left: auto; }
+.m-icon-box.m-cyan { background: rgba(56, 182, 255, 0.15); color: var(--fsa-cyan); border: 1px solid rgba(56, 182, 255, 0.3); }
+.m-icon-box.m-green { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+.m-icon-box.m-amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.m-icon-box.m-purple { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); }
+
+.m-content { display: flex; flex-direction: column; }
+.m-lbl { font-size: 0.7rem; color: var(--fsa-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+.m-val { font-size: 1.5rem; font-weight: 800; color: var(--fsa-text); line-height: 1; }
+
+/* Quick Actions Neo */
+.qa-list { display: flex; flex-direction: column; }
+.qa-item-neo {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.25rem 1.5rem; text-decoration: none;
+  border-bottom: 1px solid var(--fsa-border-glass); transition: background 0.2s;
+}
+.qa-item-neo:last-child { border-bottom: none; }
+.qa-item-neo:hover { background: rgba(255,255,255,0.03); }
+.qa-icon-wrap {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.bg-cyan-subtle { background: rgba(56, 182, 255, 0.1); }
+.bg-purple-subtle { background: rgba(167, 139, 250, 0.1); }
+.bg-green-subtle { background: rgba(52, 211, 153, 0.1); }
+
+.qa-info { display: flex; flex-direction: column; gap: 0.25rem; }
+.qa-label { font-size: 0.85rem; font-weight: 600; color: var(--fsa-text); }
+.qa-sub   { font-size: 0.75rem; color: var(--fsa-text-muted); }
+.qa-arr   { font-size: 0.7rem; color: var(--fsa-text-muted); margin-left: auto; transition: transform 0.2s; }
+.qa-item-neo:hover .qa-arr { transform: translateX(3px); color: var(--fsa-cyan); }
+
+
+/* Area Breakdown Neo */
+.area-list { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.al-row { display: flex; flex-direction: column; gap: 0.5rem; }
+.al-top { display: flex; justify-content: space-between; align-items: flex-end; }
+.al-name  { font-size: 0.8rem; font-weight: 600; color: var(--fsa-text); }
+.al-count { font-size: 0.75rem; color: var(--fsa-text-muted); }
+.al-track { height: 6px; background: rgba(0,0,0,0.3); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+.al-fill  { height: 100%; background: linear-gradient(90deg, #1E9FE8, var(--fsa-cyan)); border-radius: 99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 8px rgba(56, 182, 255, 0.5); }
+
+.empty-data-neo { text-align: center; color: var(--fsa-text-muted); font-size: 0.8rem; padding: 1rem 0; }
 
 /* Responsive */
 @media (max-width: 1100px) {
   .bento-grid { grid-template-columns: 1fr; }
-  .bento-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .metrics-grid { grid-template-columns: repeat(4, 1fr); }
-  .bento-right > .bento-card:last-child { grid-column: span 2; }
+  .bento-right { display: grid; grid-template-columns: 1fr 1fr; }
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .bento-right { grid-template-columns: 1fr; }
-  .metrics-grid { grid-template-columns: 1fr 1fr; }
-  .bento-right > .bento-card:last-child { grid-column: span 1; }
-  .dash-title { font-size: 1.4rem; }
+  .metrics-grid { grid-template-columns: 1fr; }
 }
 </style>

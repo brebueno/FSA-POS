@@ -15,13 +15,16 @@
   --fsa-text-secondary:#94A3B8;
   --fsa-text-muted:    #64748B;
   --fsa-border:        #1E3A5F;
+  --fsa-border-glass:  rgba(255, 255, 255, 0.08); /* Neo SaaS Border */
   --fsa-discount:      #FF6B35;
   --fsa-success:       #38B6FF;
 
   --fsa-radius:        0.75rem;
   --fsa-radius-sm:     0.5rem;
-  --fsa-shadow:        0 4px 24px rgba(0,0,0,0.4);
-  --fsa-shadow-card:   0 2px 16px rgba(0,0,0,0.5);
+  --fsa-radius-lg:     1.25rem;
+  --fsa-shadow:        0 8px 32px rgba(0,0,0,0.4);
+  --fsa-shadow-card:   0 4px 20px rgba(0,0,0,0.5);
+  --fsa-shadow-glow:   0 0 40px rgba(56, 182, 255, 0.15);
 
   --transition:        all 0.25s ease;
 }
@@ -1225,4 +1228,89 @@ select.fsa-form-control option {
   .course-detail-hero { padding: 2rem 0; }
   .checkout-content-wrapper::before { display: none; }
   .checkout-content-inner { padding-left: 0; }
+}
+
+/* ── Admin Redesign Utilities (SaaS Look) ───────────────────── */
+.admin-glass {
+  background: rgba(15, 34, 64, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--fsa-border-glass);
+}
+.admin-card-base {
+  background: var(--fsa-bg-card);
+  border: 1px solid var(--fsa-border-glass);
+  border-radius: var(--fsa-radius);
+  transition: var(--transition);
+}
+.admin-card-base:hover {
+  border-color: rgba(56, 182, 255, 0.25);
+  box-shadow: var(--fsa-shadow-glow);
+}
+.admin-header-glass {
+  background: rgba(7, 15, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--fsa-border-glass);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.admin-bg-mesh {
+  background-color: var(--fsa-bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(56, 182, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(10, 36, 99, 0.4) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+.fsa-input-modern {
+  background: rgba(0,0,0,0.2) !important;
+  border: 1px solid var(--fsa-border-glass) !important;
+  color: var(--fsa-text) !important;
+  border-radius: var(--fsa-radius-sm) !important;
+  padding: 0.75rem 1rem !important;
+  transition: var(--transition) !important;
+}
+.fsa-input-modern:focus {
+  background: rgba(0,0,0,0.4) !important;
+  border-color: var(--fsa-cyan) !important;
+  box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15) !important;
+  outline: none !important;
+}
+.admin-btn-modern {
+  background: var(--fsa-cyan);
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--fsa-radius-sm);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.admin-btn-modern:hover {
+  background: var(--fsa-cyan-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 182, 255, 0.3);
+}
+.admin-btn-outline-modern {
+  background: rgba(255,255,255,0.03);
+  color: var(--fsa-text);
+  font-weight: 500;
+  border: 1px solid var(--fsa-border-glass);
+  border-radius: var(--fsa-radius-sm);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.admin-btn-outline-modern:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
 }
